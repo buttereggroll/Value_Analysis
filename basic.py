@@ -30,6 +30,9 @@ def f(x):
 def f_derivative(x):
     return 35.0 * x ** 4 - 52 * x ** 3 - 63 * x ** 2 - 24 * x + 58
 
+def g(t, yi):
+    return (t - yi) / 2
+
 
 def aitken_iter(x0, x1, x2):
     return x0 - (x1 - x0) ** 2 / (x2 - 2 * x1 + x0)

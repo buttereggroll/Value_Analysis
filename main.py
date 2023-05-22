@@ -475,26 +475,48 @@ from interpolation import *
 # print(DivideLine(data, 1.5))
 # Divline_plot(data, 100)
 
-# 实验数据插值
-data1 = [[-5.0, -0.1923], [-4.5, -0.2118], [-4.0, -0.2353], [-3.5, -0.2642], [-3.0, -0.3], [-2.5, -0.3448],
-         [-2.0, -0.4000], [-1.5, 0.4615], [-1.0, -0.5000], [-0.5, -0.4000], [0, 0], [0.5, 0.4000], [1.0, 0.5000],
-         [1.5, 0.4615], [2.0, 0.4000], [2.5, 0.3448], [3.0, 0.3000], [3.5, 0.2642], [4.0, 0.2353], [4.5, 0.2118],
-         [5.0, 0.1923]]
-data2 = [[-5.0, 0.0016], [-4.5, 0.002], [-4.0, 0.0025], [-3.5, 0.0033], [-3.0, 0.0044], [-2.5, 0.0064], [-2.0, 0.0099],
-         [-1.5, 0.0175], [-1.0, 0.0385], [-0.5, 0.1379], [0, 1.0000], [0.5, 0.1379], [1.0, 0.0385], [1.5, 0.0175],
-         [2.0, 0.0099], [2.5, 0.0064], [3.0, 0.0044], [3.5, 0.0033], [4.0, 0.0025], [4.5, 0.0020], [5.0, 0.0016]]
-print(Lg(data1, 1.3))
-Lg_plot(data1, 100)
-Lg_plot(data2, 100)
+# # 实验数据插值
+# data1 = [[-5.0, -0.1923], [-4.5, -0.2118], [-4.0, -0.2353], [-3.5, -0.2642], [-3.0, -0.3], [-2.5, -0.3448],
+#          [-2.0, -0.4000], [-1.5, 0.4615], [-1.0, -0.5000], [-0.5, -0.4000], [0, 0], [0.5, 0.4000], [1.0, 0.5000],
+#          [1.5, 0.4615], [2.0, 0.4000], [2.5, 0.3448], [3.0, 0.3000], [3.5, 0.2642], [4.0, 0.2353], [4.5, 0.2118],
+#          [5.0, 0.1923]]
+# data2 = [[-5.0, 0.0016], [-4.5, 0.002], [-4.0, 0.0025], [-3.5, 0.0033], [-3.0, 0.0044], [-2.5, 0.0064], [-2.0, 0.0099],
+#          [-1.5, 0.0175], [-1.0, 0.0385], [-0.5, 0.1379], [0, 1.0000], [0.5, 0.1379], [1.0, 0.0385], [1.5, 0.0175],
+#          [2.0, 0.0099], [2.5, 0.0064], [3.0, 0.0044], [3.5, 0.0033], [4.0, 0.0025], [4.5, 0.0020], [5.0, 0.0016]]
+# print(Lg(data1, 1.3))
+# Lg_plot(data1, 100)
+# Lg_plot(data2, 100)
+#
+# print(NT(data1, 1.3))
+# NT_plot(data1, 100)
+# NT_plot(data2, 100)
+#
+# print(spline(data1, 1.3))
+# spline_plot(data1, 1000)
+# spline_plot(data2, 1000)
+#
+# print(DivideLine(data1, 1.3))
+# Divline_plot(data1, 100)
+# Divline_plot(data2, 100)
 
-print(NT(data1, 1.3))
-NT_plot(data1, 100)
-NT_plot(data2, 100)
+from ordinary_differential_equation import *
 
-print(spline(data1, 1.3))
-spline_plot(data1, 1000)
-spline_plot(data2, 1000)
+euler_yi = 1
+heun_yi = 1
+exact_yi = 1
 
-print(DivideLine(data1, 1.3))
-Divline_plot(data1, 100)
-Divline_plot(data2, 100)
+euler_error = []
+heun_error = []
+for t in np.arange(0, 3.5, 0.5):
+    print('t为{}时'.format(t))
+    print('euler_y{:.0f}:'.format(t / 0.5), euler_yi, 'heun_y{:.0f}:'.format(t / 0.5), heun_yi, 'exact_y{:.0f}:'.format(t / 0.5), exact_yi)
+    print('euler error:', abs(euler_yi - exact_yi), 'heun error:', abs(heun_yi - exact_yi), '\n')
+    euler_error.append(abs(euler_yi - exact_yi))
+    heun_error.append(abs(heun_yi - exact_yi))
+
+    euler_yi = euler_method(euler_yi, 0.5, g, t)
+    heun_yi = heun_method(euler_yi, 0.5, g, t)
+    exact_yi = 3 * np.power(np.e, -1 * (t + 0.5) / 2) - 2 + (t + 0.5)
+
+print('计算欧拉方法平均误差：', np.mean(euler_error))
+print('计算休恩方法平均误差：', np.mean(heun_error))
